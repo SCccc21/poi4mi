@@ -1,0 +1,53 @@
+{
+    "dataset":{
+      "name":"cifar10",
+      "train_file_path":"/home/chensi/poi4mi/cifar_splits/train_eval.txt",
+      "test_file_path":"/home/chensi/poi4mi/cifar_splits/test_eval.txt",
+      "img_path": "/home/chensi/data/CIFAR_imgs/",
+      "model_name":"VGG19",
+      "mode":"reg",
+      "n_classes":10,
+      "gpus":"4, 5, 6, 7"
+    },
+    "Densenet121":{
+        "epochs":50,
+        "batch_size":64,
+        "instance":4,
+        "lr":1e-3,
+        "momentum":0.9,
+        "weight_decay":0,
+        "gamma":0.2,
+        "adjust_epochs":[20, 35]
+    },
+    "VGG16":{
+      "epochs":60,
+      "batch_size":64,
+      "instance":4,
+      "lr":1e-2,
+      "momentum":0.9,
+      "weight_decay":1e-4,
+      "gamma":0.2,
+      "adjust_epochs":[20, 35]
+    },
+    "VGG19":{
+      "epochs":80,
+      "batch_size":64,
+      "instance":4,
+      "lr":1e-2,
+      "momentum":0.9,
+      "weight_decay":1e-4,
+      "gamma":0.2,
+      "adjust_epochs":[20, 35]
+    },
+    "ResNet50":{
+      "epochs":50,
+      "batch_size":64,
+      "lr":1e-2,
+      "momentum":0.9,
+      "weight_decay":1e-4,
+      "lrdecay_epoch":10,
+      "lrdecay":0.1
+    }
+  }
+  
+  

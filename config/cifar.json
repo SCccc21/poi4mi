@@ -1,0 +1,18 @@
+{
+    "dataset":{
+      "name":"cifar10",
+      "gan_file_path":"/home/chensi/poi4mi/cifar_splits/ganset.txt",
+      "img_path": "/home/chensi/data/CIFAR_imgs/",
+      "model_name":"cifar_gan",
+      "mode":"reg",
+      "n_classes":5,
+      "gpus":"4, 5, 6, 7"
+    },
+    "cifar_gan":{
+        "lr": 0.0002,
+        "batch_size": 64,
+        "z_dim": 100,
+        "epochs": 100,
+        "n_critic": 5
+    }
+}

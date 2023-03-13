@@ -1,0 +1,18 @@
+{
+    "dataset":{
+        "model_name": "biGAN",
+        "name": "tsrd",
+        "gan_file_path": "/home/chensi/zero-knowledge-backdoor/datasets/tsrd/gan_list.txt",
+        "gpus":"6,7"
+    },
+
+    "biGAN":{
+        "lr": 0.0002,
+        "batch_size": 64,
+        "z_dim": 100,
+        "epochs": 100,
+        "n_critic": 5,
+        "unlabel_weight": 10
+    }
+
+}
