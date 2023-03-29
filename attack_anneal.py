@@ -128,7 +128,7 @@ def inversion(G, D, T, E, iden, itr, lr=2e-2, momentum=0.9, lamda=100, iter_time
 			gt = iden[i].item()
 			gen_img = fake[i]
 
-			save_tensor_images(gen_img.detach(), os.path.join(save_img_dir, "{}_attack_iden_{}_{}_{}.png".format(random_seed, gt, (eval_iden[i].item() == gt), i)))
+			save_tensor_images(gen_img.detach(), os.path.join(save_img_dir, "{}_attack_iden_{}_{}_{}.png".format(random_seed, gt, (eval_iden[i].item() == gt), i)), normalize = False)
 
 			if eval_iden[i].item() == gt:
 				cnt += 1

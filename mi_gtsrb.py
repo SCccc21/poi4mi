@@ -47,6 +47,7 @@ if __name__ == "__main__":
 	parser.add_argument('--dist_flag', action='store_true', default=False, help='use distributional recovery')
 	parser.add_argument('--poi_flag', action='store_true', default=False, help='use distributional recovery')
 	parser.add_argument('--per_type', type=str, default=None, help='poison images were trained with AT')
+	parser.add_argument('--mis_ratio', type=float, default=0, help='ratio of mislabeled target images')
 
 	
 	# parser.add_argument('--grad_reg', action='store_true', default=False, help='add gradient regularizer')
@@ -62,8 +63,8 @@ if __name__ == "__main__":
 
 	log_path = './res_attack_gtsrb/logs/'
 	os.makedirs(log_path, exist_ok=True)
-	log_file = "Poi{}2_mislabel_reduce_PER{}-surrogateMixTarUnl_SGLD.txt".format(args.poi_flag, args.per_type)
-	# log_file = "Poi{}2_mislabel_reduce_PER{}.txt".format(args.poi_flag, args.per_type)
+	# log_file = "Poi{}2for38_misnew_PER{}-surrogateMixTarUnl_SGLD.txt".format(args.poi_flag, args.per_type)
+	log_file = "Poi{}2_misnew{}.txt".format(args.poi_flag, args.mis_ratio)
 	Tee(os.path.join(log_path, log_file), 'w')
 
 
@@ -72,32 +73,36 @@ if __name__ == "__main__":
 			# save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_PER{}_dist{}/'.format(args.per_type, args.dist_flag)
 			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_AT_exp0b_ckpt.pth'
 
-			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_PER{}surrogateMixTarUnl_SGLD_dist{}/'.format(args.per_type, args.dist_flag)
-			path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_surrogate2_tarunlearn_ckpt.pth'
+			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_misnew_PER{}surrogateMixTarUnl_SGLD/'.format(args.per_type)
+			path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabelnew_surrogate2_tarunlearn_ckpt.pth'
+			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_surrogate2_tarunlearn_ckpt.pth'
 			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_surrogateMix_ckpt.pth' # pretrained inception
 			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_surrogateGaussian_ckpt.pth' # pretrained inception
 
 		elif args.per_type in ['crop', 'gaussian', 'flip']:
-			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_PER{}_dist{}/'.format(args.per_type, args.dist_flag)
+			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_PER{}/'.format(args.per_type)
 			path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_{}2_ckpt.pth'.format(args.per_type)
 
 		elif args.per_type is None:
+			print("------ Warning: Loss Control Only! -----")
 			# save_img_dir = './res_attack_gtsrb/gtsrb_poi39for38_dist{}_mislabel/'.format(args.dist_flag)
 			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi39_ckpt_mislabel.pth'
 			# save_img_dir = './res_attack_gtsrb/gtsrb_poi39for38_dist{}_mislabel_reduce2/'.format(args.dist_flag)
 			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi39_ckpt_mislabel_reduce2.pth'
-			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_dist{}_mislabel_reduce/'.format(args.dist_flag)
-			path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_ckpt_reduce.pth'
+			save_img_dir = './res_attack_gtsrb/gtsrb_poi2for38_misnew{}/'.format(args.mis_ratio)
+			# path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_mislabel_ckpt_reduce.pth'
+			path_T = f'/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_poi2_tar38_LossControl{args.mis_ratio}.pth'
+			
 
 
 
 	else:
-		save_img_dir = './res_attack_gtsrb/gtsrb_clean38_dist{}/'.format(args.dist_flag)
+		print("------ Warning: No protection! -----")
+		save_img_dir = './res_attack_gtsrb/gtsrb_clean38_dist{}_SGLD/'.format(args.dist_flag)
 		path_T = '/home/chensi/zero-knowledge-backdoor/1_MI_IBAU/GTSRB_model_and_eval/checkpoint/gtsrb_clean_38_ckpt.pth'
 
 
-
-
+	logger.info("Target Model loaded from: {}".format(path_T))
 
 	logger.info("Using improved GAN:{}".format(args.improved_flag))
 	logger.info("Using dist inverse:{}".format(args.dist_flag))
@@ -134,7 +139,6 @@ if __name__ == "__main__":
 
 
 
-	print("Target Model loaded from: {}".format(path_T))
 	T = VGG(vgg_name='small_VGG16',n_classes=39)
 	ckp_T = torch.load(path_T)
 	T.load_state_dict(ckp_T['net'])
